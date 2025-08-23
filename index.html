@@ -11,13 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="data:image/webp;base64,UklGRo4AAABXRUJQVlA4TBoAAAAvAQCdASoQABAAPpEAPpEAPpEAAQAA" />
   <style>
-    :root{
-      --bg:#0b1116;--bg2:#0f1620;--panel:#101b27;--card:#0d1520;
-      --text:#e9f3fb;--muted:#a4b8c9;--accent:#ff7a18;
-      --accent2:#ff3d00;--link:#00c6ff;--success:#18d47b;
-      --danger:#ff4d6d;--glow:0 0 15px rgba(255,122,24,.5),0 0 35px rgba(255,61,0,.35);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-    }
+    :root{--bg:#0b1116;--bg2:#0f1620;--panel:#101b27;--card:#0d1520;--text:#e9f3fb;--muted:#a4b8c9;--accent:#ff7a18;--accent2:#ff3d00;--link:#00c6ff;--success:#18d47b;--danger:#ff4d6d;--glow:0 0 15px rgba(255,122,24,.5),0 0 35px rgba(255,61,0,.35);--grad:linear-gradient(135deg,var(--accent),var(--accent2));}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:Poppins,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg),var(--bg2));overflow-x:hidden}
     a{color:var(--link);text-decoration:none}img{max-width:100%;display:block}.pixel{font-family:'Orbitron',sans-serif}
@@ -26,8 +20,7 @@
     .header-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0}
     .logo{display:flex;align-items:center;gap:.7rem}
     .logo img{height:48px;width:48px;border-radius:12px;box-shadow:var(--glow)}
-    nav ul{list-style:none;display:flex;gap:1.2rem}
-    nav a{color:var(--text);font-weight:600}
+    nav ul{list-style:none;display:flex;gap:1.2rem}nav a{color:var(--text);font-weight:600}
     .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.1rem;border-radius:14px;border:0;cursor:pointer;font-weight:700;color:#0b0f14;background:var(--grad);box-shadow:var(--glow);transition:.18s ease}
     .btn:hover{transform:translateY(-2px)}.btn.small{padding:.55rem .8rem;border-radius:10px}
     .btn.ghost{background:transparent;border:2px solid var(--accent);color:var(--text)}
@@ -72,22 +65,75 @@
   <div class="container header-inner">
     <div class="logo">
       <img src="data:image/webp;base64,UklGRo4AAABXRUJQVlA4TBoAAAAvAQCdASoQABAAPpEAPpEAPpEAAQAA" alt="ZP Logo" />
-      <div>
-        <div class="pixel" style="font-size:1.1rem;color:var(--accent);">Zombie Pixel</div>
-        <div class="muted" style="font-size:.8rem;margin-top:2px;">Premium Minecraft Server</div>
-      </div>
+      <div><div class="pixel" style="font-size:1.1rem;color:var(--accent);">Zombie Pixel</div><div class="muted" style="font-size:.8rem;margin-top:2px;">Premium Minecraft Server</div></div>
     </div>
     <nav><ul><li><a href="#features">Features</a></li><li><a href="#ranks">Ranks</a></li><li><a href="#rules">Rules</a></li><li><a href="#join">Join</a></li></ul></nav>
   </div>
 </header>
-
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <h1 class="pixel">Zombie Pixel</h1>
-    <p style="margin:.5rem 0 1rem;font-size:1.1rem">Minecraft Survival • 1.21.1</p>
-    <div class="ip pixel"><i class="fa-solid fa-server"></i> play.zombiepixel.fun</div>
-    <div style="margin-top:12px">
-      <a class="btn" id="copyIp"><i class="fas fa-copy"></i> Copy IP</a>
+<section class="hero" id="home"><div class="hero-inner"><h1 class="pixel">Zombie Pixel</h1><p style="margin:.5rem 0 1rem;font-size:1.1rem">Minecraft Survival • 1.21.1</p><div class="ip pixel"><i class="fa-solid fa-server"></i> play.zombipixel.fun</div><div style="margin-top:12px"><a class="btn" id="copyIp"><i class="fas fa-copy"></i> Copy IP</a></div></div></section>
+<section id="features">
+  <div class="container">
+    <h2 class="pixel section-title">Server Features</h2>
+    <p class="section-note">Smooth gameplay, anti-cheat, and active community</p>
+    <div class="grid">
+      <div class="card"><i class="fas fa-shield-alt icon"></i><h3>Anti-Cheat</h3><p>Fair play, 24/7 moderation.</p></div>
+      <div class="card"><i class="fas fa-bolt icon"></i><h3>Low Lag</h3><p>Optimized hardware & configs.</p></div>
+      <div class="card"><i class="fas fa-users icon"></i><h3>Community</h3><p>Events & active Discord.</p></div>
+      <div class="card"><i class="fas fa-sync-alt icon"></i><h3>Updates</h3><p>New content regularly.</p></div>
     </div>
   </div>
 </section>
+<section id="ranks"><div class="container"><h2 class="pixel section-title">Ranks For Sale</h2><div id="ranksList" class="ranks-wrap"></div></div></section>
+<section id="rules"><div class="container"><h2 class="pixel section-title">Server Rules</h2><ul style="line-height:1.8;max-width:840px;margin:1rem auto;font-size:1rem"><li>Be respectful to all players and staff.</li><li>No hacking, x-ray, dupes, or exploiting bugs.</li><li>Do not grief or steal; claim your builds.</li><li>No spamming or advertising other servers.</li><li>Keep chat PG-friendly; avoid toxicity.</li><li>Follow staff instructions at all times.</li></ul></div></section>
+<section id="join"><div class="container"><h2 class="pixel section-title">How to Join</h2><div class="grid" style="margin-top:1rem"><div class="card"><i class="fas fa-clipboard-list icon"></i><h3>Step 1</h3><p>Read the rules carefully.</p></div><div class="card"><i class="fas fa-gamepad icon"></i><h3>Step 2</h3><p>Open Minecraft & add server IP.</p></div><div class="card"><i class="fas fa-sign-in-alt icon"></i><h3>Step 3</h3><p>Join & start playing!</p></div></div></div></section>
+<div id="purchaseModal" class="modal"><div class="content"><span class="close" onclick="closePurchase()">&times;</span><h2 class="pixel">Purchase Rank</h2><div class="field"><label>IGN</label><input id="ign" placeholder="Your Minecraft username"></div><div class="field"><label>Payment Method</label><select id="payMethod"><option value="UPI">UPI (FamPay / GPay / PhonePe)</option></select></div><div class="field" style="text-align:center"><div><strong>Selected:</strong> <span id="selRank">-</span></div><div style="margin-top:4px"><strong>Price:</strong> ₹<span id="selPrice">0</span></div><div class="qrbox"><img id="qrImg" alt="UPI QR" /></div><a id="payNow" class="btn" style="margin-top:8px;display:inline-block" target="_blank"><i class="fas fa-wallet"></i> Pay Now</a><div class="note" style="margin-top:6px;font-size:.9rem">Scan / tap to pay the exact amount. After paying, enter the <b>UTR</b> below and confirm.</div></div><div class="field"><label>UPI Reference (UTR)</label><input id="utr" placeholder="Example: 3129XXXXXX" maxlength="24"></div><button id="confirmBtn" class="btn" onclick="confirmPaid()" disabled>I’ve made the payment</button></div></div>
+<div id="loginModal" class="modal"><div class="content"><span class="close" onclick="closeLogin()">&times;</span><h2 class="pixel">Admin Login</h2><div class="field"><label>Username</label><input id="admU" placeholder="Admin username"></div><div class="field"><label>Password</label><input id="admP" type="password" placeholder="Password"></div><button class="btn" onclick="adminLogin()">Login</button><div id="loginErr" style="color:var(--danger);display:none;margin-top:6px">Invalid credentials</div></div></div>
+<div id="adminPanel" class="panel"><h2 class="pixel">Admin Panel</h2><div class="stats"><div class="stat"><h3>Total Purchases</h3><div id="statPurch">0</div></div><div class="stat"><h3>Total Revenue</h3>₹<span id="statRev">0</span></div><div class="stat"><h3>Popular Rank</h3><span id="statBest">-</span></div></div><div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem"><label><input type="checkbox" id="filterCompleted"> Show only <b>Completed</b></label><button class="btn ghost small" onclick="exportCSV()"><i class="fas fa-file-export"></i> Export CSV</button></div><h3 style="margin-top:1rem;color:var(--accent)">Purchase History</h3><div style="overflow:auto"><table><thead><tr><th>Date</th><th>IGN</th><th>Rank</th><th>Price</th><th>Status</th><th>UTR</th><th>Actions</th></tr></thead><tbody id="pTable"></tbody></table></div><h3 style="margin-top:1rem;color:var(--accent)">Manage Prices</h3><div class="grid"><div class="card">GOD ₹<input id="pGOD" type="number" min="0" style="width:100%;margin-top:.4rem"></div><div class="card">SAVAGE ₹<input id="pSAV" type="number" min="0" style="width:100%;margin-top:.4rem"></div><div class="card">WARRIOR ₹<input id="pWAR" type="number" min="0" style="width:100%;margin-top:.4rem"></div><div class="card">KNIGHT ₹<input id="pKNI" type="number" min="0" style="width:100%;margin-top:.4rem"></div><div class="card">ROOKIE ₹<input id="pROO" type="number" min="0" style="width:100%;margin-top:.4rem"></div></div><div style="margin-top:.6rem"><button class="btn" onclick="savePrices()">Save Prices</button><button class="btn danger" onclick="adminLogout()">Logout</button></div></div>
+<button class="btn admin-toggle" onclick="openLogin()"><i class="fas fa-user-shield"></i> Admin</button>
+<footer><div class="container"><span class="pixel">© <span id="yr"></span> Zombie Pixel</span></div></footer>
+<script>
+const UPI_ID='9149977246@fam';const DEFAULT_PRICES={GOD:1000,SAVAGE:500,WARRIOR:200,KNIGHT:100,ROOKIE:50};const RANKS=['GOD','SAVAGE','WARRIOR','KNIGHT','ROOKIE'];const $=id=>document.getElementById(id);const prices=()=>JSON.parse(localStorage.getItem('rankPrices')||'null')||{...DEFAULT_PRICES};const setPrices=p=>localStorage.setItem('rankPrices',JSON.stringify(p));const fmt=n=>n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+function badgeSVG(rank){const map={GOD:{c1:'#ffd86b',c2:'#ff9f1a',text:'#2b1600'},SAVAGE:{c1:'#ff6b6b',c2:'#ff2d2d',text:'#1b0000'},WARRIOR:{c1:'#5ff7a1',c2:'#15c07b',text:'#001b10'},KNIGHT:{c1:'#6fb6ff',c2:'#2c82ff',text:'#001331'},ROOKIE:{c1:'#e0e5ea',c2:'#b0bac5',text:'#0a0f14'}}[rank];return`
+<svg class="badge" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g${rank}" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="${map.c1}"/><stop offset="100%" stop-color="${map.c2}"/></linearGradient></defs>
+<circle cx="48" cy="48" r="42" fill="url(#g${rank})" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+<text x="50%" y="55%" text-anchor="middle" font-family="Orbitron" font-size="24" font-weight="900" fill="${map.text}">${rank[0]}</text>
+</svg>`;}
+function renderRanks(){const p=prices();const box=$('ranksList');box.innerHTML='';RANKS.forEach(r=>{const row=document.createElement('div');row.className='rank-row';row.innerHTML=`
+<div class="rank-title">${badgeSVG(r)}<span>${r}</span></div>
+<div class="price">₹${p[r]}</div>
+<div><button class="btn small" onclick="openPurchase('${r}',${p[r]})">Buy Now</button></div>`;box.appendChild(row);});}
+let upiOpened=false,pageHidden=false;document.addEventListener('visibilitychange',()=>{if(document.hidden)pageHidden=true;});
+function openPurchase(rank,price){$('selRank').textContent=rank;$('selPrice').textContent=price;$('ign').value='';$('utr').value='';upiOpened=false;pageHidden=false;$('confirmBtn').disabled=true;const upiLink=`upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=ZombiePixel&am=${price}&cu=INR`;$('qrImg').src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiLink)}`;const pay=$('payNow');pay.href=upiLink;pay.onclick=()=>{upiOpened=true;setTimeout(()=>enableIfEligible(),500);};$('purchaseModal').style.display='block';}
+function enableIfEligible(){$('confirmBtn').disabled=!(upiOpened&&pageHidden);}
+function closePurchase(){$('purchaseModal').style.display='none';}
+function confirmPaid(){const ign=$('ign').value.trim();const rank=$('selRank').textContent;const price=+$('selPrice').textContent;const utr=$('utr').value.trim();if(!ign){alert('Enter your IGN');return;}if(!upiOpened||!pageHidden){alert('Please tap Pay Now and complete payment in your UPI app.');return;}if(utr.length<6){alert('Enter the UPI reference (UTR) from your payment.');return;}const arr=JSON.parse(localStorage.getItem('purchases')||'[]');arr.push({date:new Date().toISOString(),username:ign,rank,price,status:'Pending',utr});localStorage.setItem('purchases',JSON.stringify(arr));alert('Thanks! Your payment is marked Pending. Staff will verify and approve.');closePurchase();updateStats();renderPurchases();}
+let adminCreds={username:'ZombieAdmin',password:'Pixel@2025'};function openLogin(){$('loginModal').style.display='block';}
+function closeLogin(){$('loginModal').style.display='none';$('loginErr').style.display='none';}
+let logged=false;function adminLogin(){const u=$('admU').value,p=$('admP').value;if(u===adminCreds.username&&p===adminCreds.password){logged=true;closeLogin();$('adminPanel').style.display='block';fillPriceInputs();renderPurchases();updateStats();}else{$('loginErr').style.display='block';}}
+function adminLogout(){logged=false;$('adminPanel').style.display='none';alert('Logged out');}
+function renderPurchases(){if(!logged)return;const tb=$('pTable');tb.innerHTML='';const arr=JSON.parse(localStorage.getItem('purchases')||'[]');const onlyCompleted=$('filterCompleted').checked;(onlyCompleted?arr.filter(p=>p.status==='Completed'):arr).forEach(p=>{const tr=document.createElement('tr');tr.innerHTML=`
+<td>${new Date(p.date).toLocaleString()}</td>
+<td>${p.username}</td>
+<td>${p.rank}</td>
+<td>₹${p.price}</td>
+<td><select onchange="setStatus('${p.date}', this.value)">
+<option ${p.status==='Pending'?'selected':''}>Pending</option>
+<option ${p.status==='Completed'?'selected':''}>Completed</option>
+<option ${p.status==='Refunded'?'selected':''}>Refunded</option></select></td>
+<td>${p.utr||''}</td>
+<td><button class='btn danger small' onclick="delPurchase('${p.date}')">Delete</button></td>`;tb.appendChild(tr);});}
+function setStatus(dateStr,st){const arr=JSON.parse(localStorage.getItem('purchases')||'[]');const i=arr.findIndex(x=>x.date===dateStr);if(i>-1){arr[i].status=st;localStorage.setItem('purchases',JSON.stringify(arr));updateStats();}}
+function delPurchase(dateStr){const arr=JSON.parse(localStorage.getItem('purchases')||'[]');const next=arr.filter(x=>x.date!==dateStr);localStorage.setItem('purchases',JSON.stringify(next));renderPurchases();updateStats();}
+function updateStats(){const arr=JSON.parse(localStorage.getItem('purchases')||'[]');$('statPurch').textContent=arr.length;const rev=arr.filter(p=>p.status==='Completed').reduce((s,p)=>s+p.price,0);$('statRev').textContent=fmt(rev);const counts={};arr.forEach(p=>counts[p.rank]=(counts[p.rank]||0)+1);let best='-';let mx=0;for(const[k,v]of Object.entries(counts)){if(v>mx){mx=v;best=k;}}$('statBest').textContent=best;}
+function fillPriceInputs(){const p=prices();$('pGOD').value=p.GOD;$('pSAV').value=p.SAVAGE;$('pWAR').value=p.WARRIOR;$('pKNI').value=p.KNIGHT;$('pROO').value=p.ROOKIE;}
+function savePrices(){const p={GOD:+$('pGOD').value||0,SAVAGE:+$('pSAV').value||0,WARRIOR:+$('pWAR').value||0,KNIGHT:+$('pKNI').value||0,ROOKIE:+$('pROO').value||0};setPrices(p);renderRanks();alert('Prices updated');}
+function exportCSV(){const arr=JSON.parse(localStorage.getItem('purchases')||'[]');if(!arr.length){alert('No data');return;}const header=['date','username','rank','price','status','utr'];const rows=[header.join(','),...arr.map(o=>header.map(k=>`"${(o[k]??'').toString().replace(/"/g,'""')}"`).join(','))];const blob=new Blob([rows.join('\n')],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='purchases.csv';a.click();URL.revokeObjectURL(url);}
+$('yr').textContent=new Date().getFullYear();if(!localStorage.getItem('rankPrices'))setPrices({...DEFAULT_PRICES});renderRanks();
+$('copyIp').onclick=e=>{e.preventDefault();navigator.clipboard.writeText('play.zombipixel.fun');e.currentTarget.innerHTML='<i class="fas fa-check"></i> Copied!';setTimeout(()=>e.currentTarget.innerHTML='<i class="fas fa-copy"></i> Copy IP',1200);};
+$('filterCompleted').addEventListener('change',renderPurchases);
+window.addEventListener('click',e=>{if(e.target===$('purchaseModal'))closePurchase();if(e.target===$('loginModal'))closeLogin();});
+</script>
+</body>
+</html>
