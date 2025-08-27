@@ -1,63 +1,52 @@
 <!doctype html>
 <!--
-  ZP (Zombie Pixel) — Public SMP single-file site
-  ✅ Rank-based QR payments (amount auto-locks)
-  ✅ Requires payment before IGN appears in Admin
-  ✅ Admin panel (username & password not in plain text)
-  ✅ Manage ranks, prices, links; view history; export CSV
-  ✅ Modern UI, smooth animations, responsive
-  ✅ Discord & YouTube integration (editable)
-  NOTE: This is a static file; "security" is best-effort (hashed creds).
+  ZOMBIE PIXEL — Public SMP (single-file)
+  ✔ Mobile-first, fast, animated UI
+  ✔ Working QR on phones + PC
+     - Per-rank QR image upload (optional)
+     - Dynamic QR fallback (auto-generates from UPI + price + IGN)
+  ✔ One-click UPI intent
+  ✔ Admin: edit IP/links/ranks/UPIs, upload QR, CSV export
+  ✔ Data stored in localStorage (no server needed)
+
+  Admin (hashed using Web Crypto — not stored in plain text):
+    Username: ZombieAdmin
+    Password: Pixel@2025
 -->
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#0b0c0f" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
 <title>Zombie Pixel — Public SMP</title>
-<meta name="description" content="Zombie Pixel • Public SMP • Fair Survival • Rank Store • Active Staff.">
+<meta name="description" content="Zombie Pixel • Public SMP • Premium Survival • Rank Store • Fair play.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
 :root{
-  --bg:#0b0c0f; --bg2:#121319; --card:#141622; --glass:rgba(255,255,255,.06);
-  --bd:rgba(255,255,255,.12); --txt:#ffffff; --muted:#bfc3cd;
-  --gold:#f7b928; --gold2:#d98c0a; --ok:#1FE6A3; --warn:#ffd34d; --bad:#ff546b;
-  --r:18px; --shadow:0 22px 60px rgba(0,0,0,.45);
+  --bg:#0a0a0b;--bd:rgba(255,255,255,.12);--text:#fff;--muted:#cfcfd2;
+  --gold:#fbbf24;--ok:#20e6a3;--bad:#ff4d6d;--radius:16px;--shadow:0 16px 40px rgba(0,0,0,.35)
 }
-*{box-sizing:border-box}
-html,body{margin:0}
-body{
-  font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-  color:var(--txt); background:radial-gradient(1300px 700px at 10% -10%,rgba(247,185,40,.18),transparent 55%),
-             radial-gradient(900px 520px at 110% -20%,rgba(217,140,10,.18),transparent 55%),
-             linear-gradient(180deg,#090a0d,#0b0c0f 30%,#0a0b10);
-  overflow-x:hidden;
-}
-a{color:inherit;text-decoration:none}
-.container{width:92%;max-width:1200px;margin:0 auto}
-button,.btn{font-family:inherit}
+*{box-sizing:border-box} html,body{margin:0}
+body{font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#070708,#0b0b0c);color:var(--text);overflow-x:hidden}
+.container{width:min(96%,1200px);margin:0 auto}
+a{color:inherit;text-decoration:none} b,strong{font-weight:800}
 
-.btn{
-  display:inline-flex;align-items:center;gap:.55rem;padding:.75rem 1rem;border-radius:14px;border:0;cursor:pointer;
-  font-weight:800;background:linear-gradient(45deg,var(--gold),#ffe08a);color:#111;box-shadow:0 14px 30px rgba(247,185,40,.32);
-  transition:transform .15s ease, filter .2s ease;
-}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.78rem 1rem;border-radius:14px;border:0;cursor:pointer;
+  font-weight:800;background:linear-gradient(45deg,var(--gold),#ffe08a);color:#111;box-shadow:0 12px 26px rgba(251,191,36,.3);transition:.15s}
 .btn:hover{transform:translateY(-1px)}
-.btn.ghost{background:transparent;color:var(--gold);border:2px solid var(--gold)}
-.btn.danger{background:linear-gradient(45deg,#ff7b95,#ff4d6d);color:white}
-.badge{display:inline-flex;gap:.4rem;align-items:center;background:rgba(255,255,255,.07);border:1px solid var(--bd);padding:.45rem .7rem;border-radius:999px}
+.btn.ghost{background:transparent;border:2px solid var(--gold);color:var(--gold)}
+.btn.bad{background:linear-gradient(45deg,#ff8080,#ff4747);color:#fff}
 
-header{position:sticky;top:0;z-index:60;background:rgba(13,14,18,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)}
+/* Header */
+header{position:sticky;top:0;z-index:50;background:rgba(15,15,16,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)}
 .header{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
 .brand{display:flex;gap:.75rem;align-items:center}
 .brand .name{background:linear-gradient(45deg,#ffe08a,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;letter-spacing:.3px}
-.brand small{opacity:.8}
-#logoSmall{height:46px;width:46px;border-radius:50%;object-fit:cover;box-shadow:0 0 24px rgba(247,185,40,.55)}
-
-.nav{display:flex;gap:.6rem;align-items:center}
+#logoSmall{height:42px;width:42px;border-radius:10px;object-fit:cover;box-shadow:0 0 22px rgba(251,191,36,.55)}
+.nav{display:flex;gap:.45rem;align-items:center}
 .nav a{padding:.45rem .65rem;border-radius:10px}
 .nav a:hover{background:rgba(255,215,0,.12)}
 .hamb{display:none;flex-direction:column;gap:4px;cursor:pointer}
@@ -66,62 +55,64 @@ header{position:sticky;top:0;z-index:60;background:rgba(13,14,18,.78);backdrop-f
 
 /* Drawer */
 .drawer{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none}
-.drawer .panel{position:absolute;right:0;top:0;height:100%;width:min(86%,360px);background:#0f1118;border-left:1px solid var(--bd);padding:1rem;overflow:auto}
+.drawer .panel{position:absolute;right:0;top:0;height:100%;width:min(86%,360px);background:#0f0f11;border-left:1px solid var(--bd);padding:1rem;overflow:auto}
 .drawer a{display:block;padding:.9rem;border-radius:12px;border:1px solid var(--bd);margin:.5rem 0}
 .drawer .close{position:absolute;left:8px;top:6px;font-size:28px;cursor:pointer;color:#aaa}
 
 /* Hero */
-.hero{position:relative;padding:7.5rem 0 4rem;border-bottom:1px solid var(--bd)}
-.hero .logo{width:100px;height:100px;border-radius:28px;object-fit:cover;box-shadow:0 0 46px rgba(247,185,40,.45)}
-.hero h1{font-size:clamp(28px,5vw,50px);margin:.6rem 0 0}
+.hero{position:relative;padding:6rem 0 3rem;border-bottom:1px solid var(--bd);text-align:center}
+.hero .logo{width:92px;height:92px;border-radius:24px;object-fit:cover;box-shadow:0 0 44px rgba(251,191,36,.45);animation:pop .8s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+.hero h1{font-size:clamp(28px,5vw,48px);margin:.6rem 0 0}
 .hero .sub{opacity:.9;margin:.35rem 0 1rem}
-.ip{display:flex;gap:.5rem;align-items:center;background:rgba(255,255,255,.06);border:1px solid var(--bd);padding:.6rem .8rem;border-radius:12px;flex-wrap:wrap}
+.ip{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid var(--bd);padding:.6rem .8rem;border-radius:12px}
 
 /* Sections */
-.section{padding:3rem 0;border-bottom:1px solid var(--bd)}
+.section{padding:2.4rem 0;border-bottom:1px solid var(--bd)}
 .section-title{margin:0 0 1rem;color:var(--gold)}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-.card{grid-column:span 12;background:linear-gradient(180deg,#0d0f16,#151a24);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--shadow);padding:1rem}
+.card{grid-column:span 12;background:linear-gradient(180deg,#0b0b0c,#151517);border:1px solid var(--bd);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem}
 .note{color:var(--muted);font-size:.95rem}
 
 /* Ranks */
 .ranks{grid-column:span 12;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-.rank{grid-column:span 6;background:linear-gradient(180deg,#10131b,#181d27);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;position:relative;overflow:hidden}
-.rank::after{content:"";position:absolute;inset:auto -20% -40% -20%;height:60%;background:radial-gradient(400px 120px at 50% 0,rgba(247,185,40,.14),transparent 70%)}
-.rank .emblem{height:54px;width:54px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(45deg,#ffe08a,var(--gold))}
+.rank{grid-column:span 12;background:linear-gradient(180deg,#101011,#18181b);border:1px solid var(--bd);border-radius:var(--radius);padding:1rem;display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;animation:rise .6s both}
+@keyframes rise{from{transform:translateY(10px);opacity:.2}to{transform:none;opacity:1}}
+.rank .emblem{height:50px;width:50px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(45deg,#ffe08a,var(--gold))}
 .rank .name{font-weight:800}
 .rank .price{font-weight:800;color:#ffe08a}
 .rank .controls{display:flex;gap:.5rem}
+@media (min-width:640px){ .rank{grid-column:span 6} }
+@media (min-width:980px){ .rank{grid-column:span 4} }
 
-/* Status/About */
+/* Status chips */
 .status{display:flex;gap:.6rem;flex-wrap:wrap}
+.status-chip{display:inline-flex;gap:.4rem;align-items:center;background:rgba(255,255,255,.06);border:1px solid var(--bd);padding:.5rem .7rem;border-radius:12px}
 #dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1rem}
-.modal .box{width:min(760px,96%);background:#0f1118;border:1px solid var(--bd);border-radius:18px;padding:1rem}
+.modal .box{width:min(720px,96%);background:#0f0f11;border:1px solid var(--bd);border-radius:18px;padding:1rem}
 .modal .close{float:right;font-size:28px;cursor:pointer;color:#aaa}
-.field{margin:.75rem 0}
+.field{margin:.7rem 0}
 .field label{display:block;margin-bottom:.35rem;color:var(--gold);font-weight:900}
-.field input, .field select, .field textarea{width:100%;padding:.9rem;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--txt);outline:none}
-.field input:focus, .field select:focus, .field textarea:focus{box-shadow:0 0 0 9px rgba(247,185,40,.12);border-color:var(--gold)}
-.qr{margin:.7rem auto 0;max-width:240px;background:#fff;padding:10px;border-radius:12px;border:2px solid var(--gold);display:grid;place-items:center}
-.qr small{color:#111;margin-top:.35rem}
+.field input,.field textarea{width:100%;padding:.9rem;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--text);outline:none}
+.field input:focus,.field textarea:focus{box-shadow:0 0 0 9px rgba(251,191,36,.12);border-color:var(--gold)}
+.qr{margin:.7rem auto 0;max-width:260px;background:#fff;padding:10px;border-radius:12px;border:2px solid var(--gold);display:none;place-items:center}
+.qr img{width:100%;height:auto;border-radius:6px}
 
-/* Panel */
-.panel{display:none;background:linear-gradient(180deg,#0d0f16,#151a24);border:1px solid var(--bd);border-radius:18px;margin:2rem auto;max-width:1200px;padding:1rem}
+/* Admin */
+.panel{display:none;background:linear-gradient(180deg,#0b0b0c,#151517);border:1px solid var(--bd);border-radius:18px;margin:2rem auto;max-width:1200px;padding:1rem}
 table{width:100%;border-collapse:collapse}th,td{padding:.65rem;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
 th{color:var(--gold);background:rgba(255,255,255,.02)}
 .admin-toggle{position:fixed;right:18px;bottom:18px}
 
 /* Reveal */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .5s ease}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
 .reveal.show{opacity:1;transform:none}
 
 /* Footer */
-footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-align:center;color:var(--muted)}
-.icon{display:inline-flex;align-items:center;gap:.4rem}
-.icon svg{width:18px;height:18px}
+footer{padding:2rem 0;background:#090909;border-top:1px solid var(--bd);text-align:center;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -136,17 +127,9 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
       </div>
     </div>
     <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#ranks">Ranks</a>
-      <a href="#smp">Public SMP</a>
-      <a href="#status">Status</a>
-      <a href="#vote">Vote</a>
-      <a href="#rules">Rules</a>
-      <a id="discordTop" target="_blank" rel="noopener" href="https://discord.gg/eETvXzA7Sw" class="icon">
-        <!-- simple discord icon -->
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.2.367-.43.86-.59 1.25a17.172 17.172 0 0 0-7.936 0C7.37 3.86 7.14 3.367 6.94 3A19.9 19.9 0 0 0 3.18 4.369c-2.04 3.046-2.9 6.022-2.59 8.95 2.46 1.815 4.85 2.92 7.2 3.63.58-.79 1.1-1.64 1.55-2.53- .86-.33-1.68-.74-2.46-1.22.2-.14.4-.28.6-.42a13.7 13.7 0 0 0 11.04 0c.2.14.4.28.6.42-.78.48-1.6.89-2.47 1.22.45.89.97 1.74 1.56 2.53 2.35-.71 4.73-1.82 7.2-3.63.36-3.35-.61-6.29-2.55-8.95ZM8.8 13.5c-1 0-1.82-.92-1.82-2.06 0-1.14.8-2.06 1.82-2.06s1.83.92 1.83 2.06-.82 2.06-1.83 2.06Zm6.42 0c-1 0-1.82-.92-1.82-2.06 0-1.14.82-2.06 1.82-2.06 1.02 0 1.83.92 1.83 2.06s-.8 2.06-1.83 2.06Z"/></svg>
-        Discord
-      </a>
+      <a href="#home">Home</a><a href="#ranks">Ranks</a><a href="#status">Status</a>
+      <a href="#vote">Vote</a><a href="#rules">Rules</a>
+      <a id="discordTop" target="_blank" rel="noopener" href="https://discord.gg/eETvXzA7Sw">Discord</a>
       <a class="btn" href="#ranks">Buy</a>
     </nav>
     <div id="hamb" class="hamb" aria-label="Open menu" role="button" tabindex="0"><span></span><span></span><span></span></div>
@@ -159,7 +142,6 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
   <div class="panel">
     <a href="#home" onclick="closeDrawer()">Home</a>
     <a href="#ranks" onclick="closeDrawer()">Ranks</a>
-    <a href="#smp" onclick="closeDrawer()">Public SMP</a>
     <a href="#status" onclick="closeDrawer()">Status</a>
     <a href="#vote" onclick="closeDrawer()">Vote</a>
     <a href="#rules" onclick="closeDrawer()">Rules</a>
@@ -170,11 +152,10 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
 
 <!-- Hero -->
 <section id="home" class="hero">
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="hero-inner container reveal show">
+  <div class="container reveal show">
     <img class="logo" alt="Zombie Pixel" src="https://image2url.com/images/1756202136345-ea1ce6b7-e122-4b66-ba58-08bc3c78f54a.webp">
     <h1>Zombie Pixel</h1>
-    <p class="sub">Public SMP • Events • Fair Play • Active Staff • Community Giveaways</p>
+    <p class="sub">Events • Fair Play • Active Staff • Community Giveaways</p>
     <div class="ip">
       <strong id="serverIpTxt">play.zombiepixel.fun</strong>
       <a id="copyIp" class="btn" role="button">Copy IP</a>
@@ -188,57 +169,32 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
 <section id="ranks" class="section">
   <div class="container reveal">
     <h2 class="section-title">Rank Shop</h2>
-    <div class="note" style="margin:.3rem 0 1rem">Choose your rank, enter your IGN, scan or open UPI. Amount is auto-locked.</div>
     <div id="ranksWrap" class="ranks"></div>
   </div>
 </section>
 
-<!-- Public SMP -->
-<section id="smp" class="section">
-  <div class="container reveal grid">
-    <div class="card" style="grid-column:span 7">
-      <h3>About Our Public SMP</h3>
-      <ul class="note" style="margin:.4rem 0; padding-left:1rem; line-height:1.7">
-        <li>Season-based survival with economy & claims.</li>
-        <li>Daily quests, crates, and player shops.</li>
-        <li>No pay-to-win: ranks are cosmetic & QoL.</li>
-        <li>Crossplay: Java & Bedrock supported via Geyser.</li>
-        <li>Grief protection, anticheat, and active moderation.</li>
-      </ul>
-      <div class="badge"><b>Tip:</b> Use <code>/vote</code> for keys & coins!</div>
-    </div>
-    <div class="card" style="grid-column:span 5">
-      <h3>How to Join</h3>
-      <ol class="note" style="margin:.4rem 0; padding-left:1rem">
-        <li>Copy IP → <b id="serverIpTxt2">play.zombiepixel.fun</b></li>
-        <li>Minecraft 1.20+ (Bedrock: search “Servers → Add Server”).</li>
-        <li>Read <a href="#rules" style="text-decoration:underline">Rules</a> before playing.</li>
-      </ol>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
-        <a class="btn" href="#ranks">Rank Shop</a>
-        <a class="btn" id="channelBtn" target="_blank" rel="noopener" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1">Channel</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Status -->
+<!-- Status / About -->
 <section id="status" class="section">
   <div class="container reveal grid">
     <div class="card" style="grid-column:span 7">
       <h3>Server Status</h3>
       <div class="status">
-        <div class="badge"><span id="dot" style="background:#1FE6A3"></span> <b id="state">Online</b></div>
-        <div class="badge">Players: <b id="players">42</b></div>
-        <div class="badge">Ping: <b id="ping">56</b> ms</div>
-        <div class="badge">MOTD: <b id="motd">Zombie Pixel • Stay Alive!</b></div>
+        <div class="status-chip"><span id="dot" style="background:#20e6a3"></span> <b id="state">Online</b></div>
+        <div class="status-chip">Players: <b id="players">42</b></div>
+        <div class="status-chip">Ping: <b id="ping">56</b> ms</div>
+        <div class="status-chip">MOTD: <b id="motd">Zombie Pixel • Stay Alive!</b></div>
       </div>
     </div>
     <div class="card" style="grid-column:span 5">
-      <h3>Quick Links</h3>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <a id="trailerBtn2" class="btn" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1" target="_blank">Trailer</a>
-        <a id="discordBtn2" class="btn" href="https://discord.gg/eETvXzA7Sw" target="_blank">Discord</a>
+      <h3>How to Play</h3>
+      <ol class="note" style="margin:.4rem 0; padding-left:1rem">
+        <li>Copy IP → <b id="serverIpTxt2">play.zombiepixel.fun</b></li>
+        <li>Join via Minecraft 1.20+</li>
+        <li>Use <i>/vote</i> to earn rewards</li>
+      </ol>
+      <div class="inline" style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
+        <a class="btn" href="#ranks">Rank Shop</a>
+        <a class="btn" id="channelBtn" target="_blank" rel="noopener" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1">Channel</a>
       </div>
     </div>
   </div>
@@ -249,20 +205,14 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
   <div class="container reveal">
     <h2 class="section-title">Vote & Support</h2>
     <div class="grid">
-      <div class="card">
-        <h3>Vote Links</h3>
-        <p class="note">Add vote site links in Admin → Settings.</p>
-        <div id="voteLinks" style="display:flex;gap:.6rem;flex-wrap:wrap"></div>
+      <div class="card"><h3>Vote Links</h3><p class="note">Add your vote links in Admin.</p>
+        <div class="inline" id="voteBtns" style="display:flex;gap:.6rem;flex-wrap:wrap"></div>
       </div>
-      <div class="card" id="rules">
-        <h3>Rules</h3>
-        <ul class="note" style="margin:.4rem 0; padding-left:1rem; line-height:1.7">
-          <li>No hacking, duping, or exploiting bugs.</li>
-          <li>No griefing outside war/raids (follow claim rules).</li>
-          <li>Be respectful. No harassment, slurs, or spam.</li>
-          <li>Trading IRL money for items is not allowed.</li>
-          <li>Staff decisions are final. Appeals on Discord.</li>
-        </ul>
+      <div class="card"><h3>Trailer</h3><p class="note">Watch our server trailer on YouTube.</p>
+        <a id="trailerBtn2" class="btn" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1" target="_blank">Watch Trailer</a>
+      </div>
+      <div class="card"><h3>Discord</h3><p class="note">Meet the community & get support.</p>
+        <a id="discordBtn2" class="btn" href="https://discord.gg/eETvXzA7Sw" target="_blank">Join Discord</a>
       </div>
     </div>
   </div>
@@ -276,18 +226,15 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
     <div class="field"><label>Rank</label><input id="selRank" disabled></div>
     <div class="field"><label>Price</label><input id="selPrice" disabled></div>
     <div class="field"><label>IGN (required before payment)</label><input id="ign" placeholder="Your Minecraft username"></div>
-
-    <div class="card"><b>Steps</b>: 1) Enter IGN → 2) Tap <i>Open UPI</i> / Scan QR (amount auto-locked) → 3) Pay → 4) Enter UTR → 5) Confirm.</div>
-
+    <div class="card"><b>Steps</b>: 1) Enter IGN → 2) Tap <i>Open UPI</i> or scan QR → 3) Pay → 4) Paste UTR → 5) Confirm.</div>
     <div class="field" style="text-align:center">
-      <div class="qr" id="qrWrap" style="display:none">
-        <img id="qrImg" alt="UPI QR" style="max-width:100%;height:auto">
-        <small id="qrNote">Scan to pay with any UPI app</small>
+      <div class="qr" id="qrWrap">
+        <img id="qrImg" alt="UPI QR">
+        <div id="qrNote" style="color:#000;margin-top:6px;font-weight:700">UPI: <span id="upiInline"></span></div>
       </div>
       <a id="payNow" class="btn" style="margin-top:.6rem;display:none" target="_blank" rel="noopener">Open UPI</a>
-      <div class="note" style="margin-top:.6rem">After payment, paste <b>UTR</b> below and press <i>I’ve paid</i>.</div>
+      <div class="note">After payment, paste <b>UTR</b> below and press <i>I’ve paid</i>.</div>
     </div>
-
     <div class="field"><label>UTR</label><input id="utr" placeholder="Bank reference (UTR)" maxlength="24"></div>
     <button id="confirmBtn" class="btn" onclick="confirmPaid()" disabled>I’ve paid</button>
   </div>
@@ -298,8 +245,8 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
   <div class="box">
     <span class="close" onclick="closeLogin()">×</span>
     <h2 style="color:var(--gold);margin-top:.2rem">Admin Login</h2>
-    <div class="field"><label>Username</label><input id="admU" placeholder="Admin username"></div>
-    <div class="field"><label>Password</label><input id="admP" type="password" placeholder="Admin password"></div>
+    <div class="field"><label>Username</label><input id="admU" placeholder=""></div>
+    <div class="field"><label>Password</label><input id="admP" type="password" placeholder=""></div>
     <button class="btn" onclick="adminLogin()">Login</button>
     <div id="loginErr" class="note" style="display:none;color:#ff7b95">Invalid credentials</div>
   </div>
@@ -313,20 +260,20 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
     <h3 style="margin:.2rem 0 1rem;color:var(--gold)">Site Settings</h3>
     <div class="grid">
       <div class="field" style="grid-column:span 6"><label>Server IP</label><input id="cfg_ip"></div>
-      <div class="field" style="grid-column:span 6"><label>Default UPI ID</label><input id="cfg_upi" placeholder="example@upi"></div>
+      <div class="field" style="grid-column:span 6"><label>Default UPI (fallback)</label><input id="cfg_upi"></div>
       <div class="field" style="grid-column:span 6"><label>Discord Invite</label><input id="cfg_discord"></div>
-      <div class="field" style="grid-column:span 6"><label>YouTube Trailer Link</label><input id="cfg_trailer" placeholder="https://youtu.be/..."></div>
+      <div class="field" style="grid-column:span 6"><label>YouTube Trailer Link</label><input id="cfg_trailer"></div>
       <div class="field" style="grid-column:span 6"><label>YouTube Channel Link</label><input id="cfg_channel"></div>
-      <div class="field" style="grid-column:span 12"><label>Vote Links (one per line)</label><textarea id="cfg_votes" rows="4" placeholder="https://topg.org/...\nhttps://minecraft-mp.com/..."></textarea></div>
+      <div class="field" style="grid-column:span 12"><label>Vote Links (one per line)</label><textarea id="cfg_votes" rows="3" placeholder="https://topg.org/...\nhttps://minecraft-mp.com/..."></textarea></div>
     </div>
     <div class="inline" style="margin-top:.6rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
       <button class="btn" onclick="saveSiteConfig()">Save Settings</button>
-      <span class="note">Saved in your browser (localStorage) & applied instantly.</span>
+      <span class="note">Instant update (saved in your browser).</span>
     </div>
   </div>
 
   <div class="card" style="margin:1rem 0">
-    <h3 style="color:var(--gold);margin:.2rem 0 1rem">Ranks (editable)</h3>
+    <h3 style="color:var(--gold);margin:.2rem 0 1rem">Ranks (price, UPI, QR image)</h3>
     <div id="rankAdmin" class="grid"></div>
     <div class="inline" style="margin-top:.6rem;display:flex;gap:.6rem;flex-wrap:wrap">
       <button class="btn" onclick="addRankAdmin()">Add Rank</button>
@@ -337,7 +284,7 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
   <h3 style="color:var(--gold)">Purchase History</h3>
   <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.5rem 0 1rem">
     <label><input type="checkbox" id="filterCompleted"> Only <b>Completed</b></label>
-    <input id="searchIGN" placeholder="Search IGN…" style="padding:.6rem .75rem;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--txt)">
+    <input id="searchIGN" placeholder="Search IGN…" style="padding:.6rem .75rem;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--text)">
     <button class="btn ghost" onclick="exportCSV()">Export CSV</button>
   </div>
   <div class="card">
@@ -361,45 +308,45 @@ footer{padding:2rem 0;background:#090a0d;border-top:1px solid var(--bd);text-ali
 
 <footer>
   © <span id="yr"></span> Zombie Pixel • All rights reserved •
-  <a id="discordFoot" target="_blank" href="https://discord.gg/eETvXzA7Sw" class="icon">Discord</a> •
-  <a id="ytFoot" target="_blank" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1" class="icon">YouTube</a>
+  <a id="discordFoot" target="_blank" href="https://discord.gg/eETvXzA7Sw">Discord</a> •
+  <a id="ytFoot" target="_blank" href="https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1">YouTube</a>
 </footer>
 
 <script>
-/* -------- tiny helpers -------- */
-const els = (s, r=document)=>[...r.querySelectorAll(s)];
-const $  = (s, r=document)=>r.querySelector(s);
+/* ---------- helpers ---------- */
+const els = (sel, root=document)=>[...root.querySelectorAll(sel)];
+const $  = (sel, root=document)=>root.querySelector(sel);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
-/* -------- storage -------- */
+/* ---------- storage ---------- */
 const DB = {
-  get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{return d}},
+  get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{return d} },
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
 
-/* -------- defaults -------- */
+/* ---------- defaults ---------- */
 const DEFAULT_CONFIG = {
   ip: "play.zombiepixel.fun",
-  // your UPI shown in the screenshot:
   upi: "9149977246@fam",
   discord: "https://discord.gg/eETvXzA7Sw",
   trailer: "https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1",
   channel: "https://youtube.com/@officialtonightgamerz?si=FPB7CzrrLJEE6ia1",
-  votes: ["# Add vote links in Admin → Settings"]
+  votes: ["#","https://minecraft-mp.com/"]
 };
 const DEFAULT_RANKS = [
-  {name:"Legend", price:1000, upi:""},
-  {name:"Mythic", price:500, upi:""},
-  {name:"Elite", price:300, upi:""},
-  {name:"Hero", price:200, upi:""},
-  {name:"Knight", price:100, upi:""},
-  {name:"Member+", price:50, upi:""}
+  {name:"Legend", price:1000, upi:"", qrStatic:""},
+  {name:"Mythic", price:500,  upi:"", qrStatic:""},
+  {name:"Elite",  price:300,  upi:"", qrStatic:""},
+  {name:"Hero",   price:200,  upi:"", qrStatic:""},
+  {name:"Knight", price:100,  upi:"", qrStatic:""},
+  {name:"Member+",price:50,   upi:"", qrStatic:""}
 ];
 
-let CONFIG = DB.get("zp2_config", DEFAULT_CONFIG);
-let RANKS  = DB.get("zp2_ranks", DEFAULT_RANKS);
-let PURCHASES = DB.get("zp2_purchases", []);
+let CONFIG    = DB.get("zp_config", DEFAULT_CONFIG);
+let RANKS     = DB.get("zp_ranks", DEFAULT_RANKS);
+let PURCHASES = DB.get("zp_purchases", []);
 
-/* -------- UI boot -------- */
+/* ---------- UI boot ---------- */
 function applyConfig(){
   $("#serverIpTxt").textContent = CONFIG.ip;
   $("#serverIpTxt2").textContent = CONFIG.ip;
@@ -413,13 +360,10 @@ function applyConfig(){
   $("#discordFoot").href = CONFIG.discord;
   $("#ytFoot").href = CONFIG.channel;
 
-  // vote links
-  const wrap=$("#voteLinks"); wrap.innerHTML="";
+  const voteWrap = $("#voteBtns"); voteWrap.innerHTML="";
   (CONFIG.votes||[]).forEach((v,i)=>{
-    if(!v || v.trim().startsWith("#")) return;
-    const a=document.createElement("a");
-    a.className="btn ghost"; a.target="_blank"; a.rel="noopener"; a.href=v; a.textContent = "Vote #"+(i+1);
-    wrap.appendChild(a);
+    const a=document.createElement("a"); a.className="btn ghost"; a.target="_blank"; a.href=v; a.textContent="Vote #"+(i+1);
+    voteWrap.appendChild(a);
   });
 }
 function renderRanks(){
@@ -429,7 +373,7 @@ function renderRanks(){
     div.className="rank";
     div.innerHTML=`
       <div class="emblem">👑</div>
-      <div><div class="name">${r.name}</div><div class="note">Cosmetic & QoL perks</div></div>
+      <div><div class="name">${r.name}</div><div class="note">Exclusive cosmetics & perks</div></div>
       <div class="price">₹${r.price}</div>
       <div class="controls"><button class="btn" onclick="openBuy(${i})">Buy</button></div>
     `;
@@ -437,100 +381,99 @@ function renderRanks(){
   });
 }
 
-/* -------- drawer -------- */
+/* ---------- Drawer ---------- */
 $("#hamb").onclick = ()=>{ $("#drawer").style.display="block"; $("#drawer").ariaHidden="false"; };
 function closeDrawer(){ $("#drawer").style.display="none"; $("#drawer").ariaHidden="true"; }
 
-/* -------- particles bg -------- */
-(function(){
-  const c=document.getElementById("bgCanvas"), ctx=c.getContext("2d");
-  function resize(){ c.width=innerWidth; c.height=360 } resize(); addEventListener("resize",resize);
-  const P=[]; const N=140;
-  for(let i=0;i<N;i++){ P.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35, r:Math.random()*2+1}); }
-  function t(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(const p of P){
-      p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>c.width) p.vx*=-1; if(p.y<0||p.y>c.height) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle="rgba(247,185,40,.45)"; ctx.fill();
-    } requestAnimationFrame(t);
-  } t();
-})();
-
-/* -------- status mock -------- */
+/* ---------- Status (mock) ---------- */
 function randomStatus(){
-  const up = Math.random()>0.08;
+  const up = Math.random()>0.08; // 92% up
   $("#state").textContent = up? "Online":"Offline";
-  $("#dot").style.background = up? "#1FE6A3":"#ff5c7a";
+  $("#dot").style.background = up? "#20e6a3":"#ff5c7a";
   $("#players").textContent = up? Math.floor(Math.random()*60)+10 : 0;
   $("#ping").textContent = up? Math.floor(Math.random()*120)+40 : "—";
   $("#motd").textContent = up? "Zombie Pixel • Stay Alive!" : "—";
 }
-setInterval(randomStatus, 30000);
+setInterval(randomStatus,30000);
 
-/* -------- buy flow (rank-based QR) -------- */
-let currentRank=null;
+/* ---------- Buy flow ---------- */
+let currentRankIndex = -1;
 function openBuy(i){
-  const r=RANKS[i]; currentRank=r;
-  $("#selRank").value=r.name; $("#selPrice").value="₹"+r.price;
+  currentRankIndex = i;
+  const r = RANKS[i];
+  $("#selRank").value = r.name; $("#selPrice").value = "₹"+r.price;
   $("#ign").value=""; $("#utr").value=""; $("#confirmBtn").disabled=true;
-  // reset QR
-  $("#qrWrap").style.display="none"; $("#payNow").style.display="none";
+  $("#qrWrap").style.display="grid"; // always visible, img updated when IGN typed
+  $("#qrImg").src=""; $("#upiInline").textContent=(r.upi||CONFIG.upi);
+  $("#payNow").style.display="none";
   $("#buyModal").style.display="flex";
 }
 function closeBuy(){ $("#buyModal").style.display="none"; }
+
+$("#ign").addEventListener("input", ()=>{
+  const ign = $("#ign").value.trim();
+  const r   = RANKS[currentRankIndex];
+  const upi = (r.upi && r.upi.trim()) || CONFIG.upi;
+  const note= `${r.name}-${ign||"player"}`;
+  const upiURL = buildUPI(upi, r.price, note);
+  $("#upiInline").textContent = upi;
+
+  // Preferred: use per-rank uploaded QR if provided AND no IGN yet
+  if(r.qrStatic){
+    // If IGN entered, still show dynamic so amount+note are encoded:
+    if(ign.length>=3){
+      setDynamicQR(upiURL);
+    }else{
+      $("#qrImg").src = r.qrStatic; $("#qrImg").style.display="block";
+    }
+  }else{
+    setDynamicQR(upiURL);
+  }
+
+  if(ign.length>=3){
+    $("#payNow").href = upiURL;
+    $("#payNow").style.display="inline-flex";
+  }else{
+    $("#payNow").style.display="none";
+  }
+});
+
+$("#utr").addEventListener("input", ()=>{ $("#confirmBtn").disabled = ($("#utr").value.trim().length<6); });
+
+function setDynamicQR(upiURL){
+  // Use a robust public QR service that works on phones.
+  const service = "https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=";
+  $("#qrImg").src = service + encodeURIComponent(upiURL);
+  $("#qrImg").style.display="block";
+}
 
 function buildUPI(upi, amount, note){
   const p = new URLSearchParams({pa:upi, pn:"Zombie Pixel", am:String(amount), cu:"INR", tn:note});
   return "upi://pay?"+p.toString();
 }
-function updateQR(){
-  const ign = $("#ign").value.trim();
-  if(!currentRank || ign.length<3){ $("#qrWrap").style.display="none"; $("#payNow").style.display="none"; return; }
-  const upi = (currentRank.upi && currentRank.upi.trim()) || CONFIG.upi || DEFAULT_CONFIG.upi;
-  const upiURL = buildUPI(upi, currentRank.price, `${currentRank.name}-${ign}`);
-  // show QR that ALWAYS loads
-  $("#qrImg").src = "https://chart.googleapis.com/chart?cht=qr&chs=420x420&chl="+encodeURIComponent(upiURL);
-  $("#qrWrap").style.display="grid";
-  $("#payNow").href = upiURL; $("#payNow").style.display="inline-flex";
-  $("#qrNote").textContent = `UPI: ${upi}`;
-}
-$("#ign").addEventListener("input", updateQR);
-$("#utr").addEventListener("input", ()=>{ $("#confirmBtn").disabled = ($("#utr").value.trim().length<6); });
-
 function confirmPaid(){
-  const ign=$("#ign").value.trim(); const utr=$("#utr").value.trim();
+  const ign = $("#ign").value.trim(); const utr=$("#utr").value.trim();
   if(!ign || utr.length<6){ alert("Enter IGN and valid UTR"); return; }
-  PURCHASES.push({ts:Date.now(), ign, rank:currentRank.name, price:currentRank.price, utr, status:"Completed"});
-  DB.set("zp2_purchases", PURCHASES);
+  const r = RANKS[currentRankIndex];
+  PURCHASES.push({ts:Date.now(), ign, rank:r.name, price:r.price, utr, status:"Completed"});
+  DB.set("zp_purchases", PURCHASES);
   closeBuy(); renderPurchases(); calcStats(); alert("Payment recorded. Thank you!");
 }
 
-/* -------- admin auth (hashed, not plain text) -------- */
-// Default admin: ZombieAdmin / Pixel@2025 (but stored hashed)
-const ADMIN_DEFAULT_USER="ZombieAdmin";
-const ADMIN_DEFAULT_PASS="Pixel@2025";
-const HASH_KEY="zp2_admin_hash";
-
-async function sha(t){
-  const enc=new TextEncoder().encode(t);
-  const h=await crypto.subtle.digest("SHA-256",enc);
-  return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function ensureAdminHash(){
-  let h=DB.get(HASH_KEY,null);
-  if(!h){
-    h = { u: await sha(ADMIN_DEFAULT_USER), p: await sha(ADMIN_DEFAULT_PASS) };
-    DB.set(HASH_KEY,h);
-  }
-  return h;
+/* ---------- Admin auth (Web Crypto SHA-256) ---------- */
+const ADMIN_USER_HASH="5084cb529e51ea04889667c23f37e121f5ab8be1b2246ea43633ac8a131550e5";
+const ADMIN_PASS_HASH="c9c66a013ce905fbd3cfc654dd04d62c1de9cf70a96d33e5799839291c0009a2";
+async function sha256hex(txt){
+  const buf = new TextEncoder().encode(txt);
+  const d   = await crypto.subtle.digest("SHA-256", buf);
+  return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 function openLogin(){ $("#loginModal").style.display="flex"; }
 function closeLogin(){ $("#loginModal").style.display="none"; }
-
 async function adminLogin(){
   const u=$("#admU").value.trim(), p=$("#admP").value;
-  const h=await ensureAdminHash();
-  if(await sha(u)===h.u && await sha(p)===h.p){
+  const uh=await sha256hex(u), ph=await sha256hex(p);
+  if(uh===ADMIN_USER_HASH && ph===ADMIN_PASS_HASH){
     $("#loginErr").style.display="none";
     $("#loginModal").style.display="none";
     $("#adminPanel").style.display="block";
@@ -538,7 +481,7 @@ async function adminLogin(){
   }else{ $("#loginErr").style.display="block"; }
 }
 
-/* -------- admin: settings -------- */
+/* ---------- Admin: settings ---------- */
 function saveSiteConfig(){
   CONFIG = {
     ip: $("#cfg_ip").value.trim() || DEFAULT_CONFIG.ip,
@@ -548,7 +491,7 @@ function saveSiteConfig(){
     channel: $("#cfg_channel").value.trim() || DEFAULT_CONFIG.channel,
     votes: ($("#cfg_votes").value||"").split("\n").map(s=>s.trim()).filter(Boolean)
   };
-  DB.set("zp2_config", CONFIG);
+  DB.set("zp_config", CONFIG);
   applyConfig();
   alert("Saved.");
 }
@@ -566,38 +509,57 @@ function renderRankAdmin(){
   wrap.style.gridTemplateColumns="repeat(12,1fr)";
   RANKS.forEach((r,i)=>{
     const card=document.createElement("div");
-    card.className="card";
-    card.style.gridColumn="span 6";
+    card.className="card"; card.style.gridColumn="span 6";
     card.innerHTML=`
        <div class="field"><label>Name</label><input value="${r.name}" data-i="${i}" data-k="name"></div>
        <div class="field"><label>Price (₹)</label><input type="number" value="${r.price}" data-i="${i}" data-k="price"></div>
-       <div class="field"><label>Custom UPI (optional for this rank)</label><input value="${r.upi||""}" data-i="${i}" data-k="upi" placeholder="leave blank to use default"></div>
-       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-         <button class="btn" data-i="${i}" data-act="dup">Duplicate</button>
-         <button class="btn danger" data-i="${i}" data-act="del">Delete</button>
+       <div class="field"><label>UPI for this Rank (optional; otherwise uses Default UPI)</label><input value="${r.upi||""}" data-i="${i}" data-k="upi" placeholder="${CONFIG.upi}"></div>
+       <div class="field"><label>QR Image (optional override; PNG/JPG/WebP)</label>
+         <input type="file" accept="image/*" data-i="${i}" data-k="qrfile">
+         <div class="note">If not set, a dynamic QR with amount + IGN is generated automatically.</div>
+         <div style="display:flex;gap:.6rem;align-items:center;margin-top:.4rem">
+            <img src="${r.qrStatic||""}" alt="" style="max-width:120px;max-height:120px;${r.qrStatic?'':'display:none'}" id="qrprev_${i}">
+            <button class="btn ghost" data-i="${i}" data-act="clearqr" type="button">Clear QR</button>
+         </div>
+       </div>
+       <div style="display:flex;gap:.5rem">
+         <button class="btn" data-i="${i}" data-act="dup" type="button">Duplicate</button>
+         <button class="btn bad" data-i="${i}" data-act="del" type="button">Delete</button>
        </div>
     `;
     wrap.appendChild(card);
   });
   wrap.querySelectorAll("input").forEach(inp=>{
-    inp.oninput = (e)=>{
-      const i = +e.target.dataset.i, k=e.target.dataset.k;
-      if(k==="price"){ RANKS[i][k] = Math.max(0, +e.target.value||0); }
-      else RANKS[i][k] = e.target.value;
-    };
+    const i = +inp.dataset.i;
+    const k = inp.dataset.k;
+    if(k==="qrfile"){
+      inp.onchange = (e)=>{
+        const file = e.target.files[0];
+        if(!file) return;
+        const rd = new FileReader();
+        rd.onload = ()=>{ RANKS[i].qrStatic = rd.result; DB.set("zp_ranks", RANKS); const img=$("#qrprev_"+i); img.src=rd.result; img.style.display="block"; };
+        rd.readAsDataURL(file);
+      };
+    }else{
+      inp.oninput = (e)=>{
+        if(k==="price"){ RANKS[i][k] = Math.max(0, +e.target.value||0); }
+        else RANKS[i][k] = e.target.value;
+      };
+    }
   });
   wrap.querySelectorAll("button").forEach(btn=>{
     btn.onclick = (e)=>{
       const i = +e.target.dataset.i, act=e.target.dataset.act;
       if(act==="del"){ RANKS.splice(i,1); renderRankAdmin(); renderRanks(); }
       if(act==="dup"){ RANKS.splice(i+1,0,{...RANKS[i]}); renderRankAdmin(); renderRanks(); }
+      if(act==="clearqr"){ RANKS[i].qrStatic=""; const img=$("#qrprev_"+i); if(img){img.style.display="none";} }
     };
   });
 }
-function addRankAdmin(){ RANKS.push({name:"New Rank", price:0, upi:""}); renderRankAdmin(); }
-function saveRanks(){ DB.set("zp2_ranks", RANKS); renderRanks(); alert("Ranks saved."); }
+function addRankAdmin(){ RANKS.push({name:"New Rank", price:0, upi:"", qrStatic:""}); renderRankAdmin(); }
+function saveRanks(){ DB.set("zp_ranks", RANKS); renderRanks(); alert("Ranks saved."); }
 
-/* -------- purchases table & stats -------- */
+/* ---------- Purchases table ---------- */
 function renderPurchases(){
   const onlyCompleted = $("#filterCompleted").checked;
   const q = ($("#searchIGN").value||"").toLowerCase();
@@ -610,7 +572,7 @@ function renderPurchases(){
       const tr=document.createElement("tr");
       const d=new Date(p.ts).toLocaleString();
       tr.innerHTML=`<td>${d}</td><td>${p.ign}</td><td>${p.rank}</td><td>₹${p.price}</td>
-        <td style="color:${p.status==='Completed'?'#1FE6A3':'#ffd34d'}">${p.status}</td><td>${p.utr}</td>`;
+        <td style="color:${p.status==='Completed'?'#20e6a3':'#ffd34d'}">${p.status}</td><td>${p.utr}</td>`;
       tbody.appendChild(tr);
     });
 }
@@ -619,8 +581,10 @@ $("#searchIGN").oninput=renderPurchases;
 
 function calcStats(){
   $("#statCount").value = PURCHASES.length;
-  $("#statRevenue").value = PURCHASES.reduce((s,p)=>s+(p.status==="Completed"?+p.price:0),0);
+  const rev = PURCHASES.reduce((s,p)=>s+(+p.price||0),0);
+  $("#statRevenue").value = rev;
   $("#statLast").value = (PURCHASES[0]?.utr)||"—";
+  DB.set("zp_purchases", PURCHASES);
 }
 function exportCSV(){
   const rows=[["Date","IGN","Rank","Price","Status","UTR"]];
@@ -630,11 +594,11 @@ function exportCSV(){
   const a=document.createElement("a"); a.href=url; a.download="zp_purchases.csv"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),500);
 }
 
-/* -------- reveal on scroll -------- */
+/* ---------- Reveal on scroll ---------- */
 function revealOnScroll(){ els(".reveal").forEach(e=>{ const r=e.getBoundingClientRect(); if(r.top<window.innerHeight-80) e.classList.add("show"); });}
 addEventListener("scroll",revealOnScroll); addEventListener("load",revealOnScroll);
 
-/* -------- boot -------- */
+/* ---------- Boot ---------- */
 addEventListener("load", ()=>{
   $("#yr").textContent = new Date().getFullYear();
   applyConfig(); renderRanks(); randomStatus();
